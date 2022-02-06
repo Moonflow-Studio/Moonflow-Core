@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.Callbacks;
@@ -8,6 +9,8 @@ using UnityEditor.PackageManager;
 using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
+using Moonflow.Core;
+
 
 public class MoonflowPackageUpdater : Editor
 {
@@ -17,7 +20,7 @@ public class MoonflowPackageUpdater : Editor
     }
 
     private const string PackageName = "com.moonflow-studio.core";
-    private const string PackageURL = "https://git.code.tencent.com/Reguluz/MoonflowCore/raw/master/package.json";
+    private const string PackageURL = "https://gitee.com/reguluz/moonflow-core/raw/master/package.json";
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
     private const string CheckForUpdateText = "Moonflow/Core/Check for updates";
     private const string UpdateText = "Moonflow/Core/Update";
@@ -26,7 +29,9 @@ public class MoonflowPackageUpdater : Editor
     {
         WebClient wc = new WebClient();
         string json = await wc.DownloadStringTaskAsync(PackageURL);
-        string versionText = JsonUtility.FromJson<PackageInfo>(json).version;
+        Regex regex = new Regex("\"version\": \"(.+)\"");
+        Match match = regex.Match(json);
+        string versionText = match.Groups[1].Value;
         Version version = Version.Parse(versionText);
         Version currentVersion = await GetLocalVersion();
 
@@ -36,7 +41,8 @@ public class MoonflowPackageUpdater : Editor
             return updateAvailable;
         }
         else
-        {
+        {   
+            MFDebug.Log("核心已经是最新版");
             return false;
         }
     }

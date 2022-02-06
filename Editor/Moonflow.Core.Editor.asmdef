@@ -1,15 +1,18 @@
 {
-  "name": "Moonflow.Core.Editor",
-  "references": [],
-  "optionalUnityReferences": [],
-  "includePlatforms": [
-    "Editor"
-  ],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": []
+    "name": "Moonflow.Core.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:32cd36deaa324e90ad7098ac9a2eeb78"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

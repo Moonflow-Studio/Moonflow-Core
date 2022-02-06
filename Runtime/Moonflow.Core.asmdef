@@ -3,10 +3,11 @@
   "references": [],
   "optionalUnityReferences": [],
   "excludePlatforms": [],
-  "allowUnsafeCode": false,
+  "allowUnsafeCode": true,
   "overrideReferences": false,
   "precompiledReferences": [],
   "autoReferenced": true,
   "defineConstraints": [],
-  "versionDefines": []
+  "versionDefines": [],
+  "noEngineReferences": false
 }

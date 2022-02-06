@@ -1,8 +1,8 @@
 #define MF_DEBUG
 using UnityEngine;
-namespace Moonflow.Utility
+namespace Moonflow.Core
 {
-    public class MFDebug
+    public static class MFDebug
     {
         public static void Log(string context)
         {
