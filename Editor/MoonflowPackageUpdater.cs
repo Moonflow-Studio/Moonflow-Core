@@ -35,7 +35,7 @@ public class MoonflowPackageUpdater : Editor
         if (currentVersion != null)
         {
             bool updateAvailable = currentVersion.CompareTo(remoteVersion) < 0;
-            MFDebug.Log($"最新版{remoteVersion}可以使用");
+            if(updateAvailable)MFDebug.Log($"最新版{remoteVersion}可以使用");
             return updateAvailable;
         }
         else
@@ -90,7 +90,6 @@ public class MoonflowPackageUpdater : Editor
     [MenuItem(UpdateText, false, 0)]
     public static void Update()
     {
-        //get the manifest.json file
         string path = Application.dataPath;
         path = Directory.GetParent(path).FullName;
         path = Path.Combine(path, "Packages", "manifest.json");
@@ -102,22 +101,7 @@ public class MoonflowPackageUpdater : Editor
             string versionText = match.Groups[1].Value;
             // text = regex.Replace(text, , 1);
             // Version version = Version.Parse(versionText);
-            // int index = text.IndexOf("\"lock\"");
-            // int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
-            // int end = start + text.Substring(start).IndexOf("}") + 2;
-            // string entry = text.Substring(start, end - start);
-            //
-            // //doesnt end with a comma, so remove the comma at the beginning of this entry if it exists because its the last entry
-            // if (!entry.EndsWith(","))
-            // {
-            //     if (text.Substring(start - 2).Contains(","))
-            //     {
-            //         //4 spaces for tabs and 3 for quote, comma and }
-            //         int comma = (start - 7) + text.Substring(start - 7).IndexOf(",");
-            //         text = text.Remove(comma, 1);
-            //     }
-            // }
-            //
+
             text = text.Replace(versionText, $"{GitURL}#{remoteVersion}");
             File.WriteAllText(path, text);
             AssetDatabase.Refresh();
