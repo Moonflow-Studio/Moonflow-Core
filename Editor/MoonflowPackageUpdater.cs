@@ -38,6 +38,7 @@ public class MoonflowPackageUpdater : Editor
         if (currentVersion != null)
         {
             bool updateAvailable = currentVersion.CompareTo(version) < 0;
+            MFDebug.Log($"最新版{version}可以使用");
             return updateAvailable;
         }
         else
