@@ -17,7 +17,7 @@ public class MoonflowPackageUpdater : Editor
     }
 
     private const string PackageName = "com.moonflow-studio.core";
-    private const string PackageURL = "https://git.code.tencent.com/Reguluz/MoonflowCore/blob/master/package.json";
+    private const string PackageURL = "https://git.code.tencent.com/Reguluz/MoonflowCore/raw/master/package.json";
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
     private const string CheckForUpdateText = "Moonflow/Core/Check for updates";
     private const string UpdateText = "Moonflow/Core/Update";
@@ -26,7 +26,7 @@ public class MoonflowPackageUpdater : Editor
     {
         WebClient wc = new WebClient();
         string json = await wc.DownloadStringTaskAsync(PackageURL);
-        string versionText = JsonUtility.FromJson<Package>(json).version;
+        string versionText = JsonUtility.FromJson<PackageInfo>(json).version;
         Version version = Version.Parse(versionText);
         Version currentVersion = await GetLocalVersion();
 
