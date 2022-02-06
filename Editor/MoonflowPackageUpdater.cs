@@ -24,21 +24,18 @@ public class MoonflowPackageUpdater : Editor
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
     private const string CheckForUpdateText = "Moonflow/Core/Check for updates";
     private const string UpdateText = "Moonflow/Core/Update";
+    private const string GitURL = "https://gitee.com/reguluz/moonflow-core.git";
+    private static Version remoteVersion;
 
     private static async Task<bool> IsUpdateAvailable()
     {
-        WebClient wc = new WebClient();
-        string json = await wc.DownloadStringTaskAsync(PackageURL);
-        Regex regex = new Regex("\"version\": \"(.+)\"");
-        Match match = regex.Match(json);
-        string versionText = match.Groups[1].Value;
-        Version version = Version.Parse(versionText);
+        remoteVersion = await GetRemoteVersion();
         Version currentVersion = await GetLocalVersion();
 
         if (currentVersion != null)
         {
-            bool updateAvailable = currentVersion.CompareTo(version) < 0;
-            MFDebug.Log($"最新版{version}可以使用");
+            bool updateAvailable = currentVersion.CompareTo(remoteVersion) < 0;
+            MFDebug.Log($"最新版{remoteVersion}可以使用");
             return updateAvailable;
         }
         else
@@ -46,6 +43,17 @@ public class MoonflowPackageUpdater : Editor
             MFDebug.Log("核心已经是最新版");
             return false;
         }
+    }
+
+    private static async Task<Version> GetRemoteVersion()
+    {
+        WebClient wc = new WebClient();
+        string json = await wc.DownloadStringTaskAsync(PackageURL);
+        Regex regex = new Regex("\"version\": \"(.+)\"");
+        Match match = regex.Match(json);
+        string versionText = match.Groups[1].Value;
+        Version version = Version.Parse(versionText);
+        return version;
     }
 
     private static async Task<Version> GetLocalVersion()
@@ -89,26 +97,31 @@ public class MoonflowPackageUpdater : Editor
         if (File.Exists(path))
         {
             string text = File.ReadAllText(path);
-            int index = text.IndexOf("\"lock\"");
-            int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
-            int end = start + text.Substring(start).IndexOf("}") + 2;
-            string entry = text.Substring(start, end - start);
-
-            //doesnt end with a comma, so remove the comma at the beginning of this entry if it exists because its the last entry
-            if (!entry.EndsWith(","))
-            {
-                if (text.Substring(start - 2).Contains(","))
-                {
-                    //4 spaces for tabs and 3 for quote, comma and }
-                    int comma = (start - 7) + text.Substring(start - 7).IndexOf(",");
-                    text = text.Remove(comma, 1);
-                }
-            }
-
-            text = text.Replace(entry, "");
+            Regex regex = new Regex($"\"{PackageName}\": \"{GitURL}#(.+)\"");
+            // Match match = regex.Match(text);
+            // string versionText = match.Groups[1].Value;
+            text = regex.Replace(text, remoteVersion.ToString(), 1);
+            // Version version = Version.Parse(versionText);
+            // int index = text.IndexOf("\"lock\"");
+            // int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
+            // int end = start + text.Substring(start).IndexOf("}") + 2;
+            // string entry = text.Substring(start, end - start);
+            //
+            // //doesnt end with a comma, so remove the comma at the beginning of this entry if it exists because its the last entry
+            // if (!entry.EndsWith(","))
+            // {
+            //     if (text.Substring(start - 2).Contains(","))
+            //     {
+            //         //4 spaces for tabs and 3 for quote, comma and }
+            //         int comma = (start - 7) + text.Substring(start - 7).IndexOf(",");
+            //         text = text.Remove(comma, 1);
+            //     }
+            // }
+            //
+            // text = text.Replace(entry, "");
             File.WriteAllText(path, text);
-
             AssetDatabase.Refresh();
+            MFDebug.Log($"Moonflow Core已升级到{remoteVersion}版");
         }
     }
 
