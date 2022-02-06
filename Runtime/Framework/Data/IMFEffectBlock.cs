@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IMFEffectBlock
 {
    public void SetEnable(bool enable);
-   public void GetEnable();
+   public bool GetEnable();
 }
