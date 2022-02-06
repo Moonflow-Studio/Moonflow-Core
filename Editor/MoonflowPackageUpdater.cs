@@ -116,7 +116,7 @@ public class MoonflowPackageUpdater : Editor
         return EditorPrefs.GetBool(CanUpdateKey);
     }
     
-    [MenuItem(ForceUpdateText, false, 0)]
+    [MenuItem(ForceUpdateText)]
     public static void ForceUpdate()
     {
         string path = Application.dataPath;
