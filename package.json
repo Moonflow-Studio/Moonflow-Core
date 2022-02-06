@@ -1,7 +1,7 @@
 {
     "name": "com.moonflow-studio.core",
     "displayName": "MF Framework Core",
-    "version": "0.0.4",
+    "version": "0.0.5",
     "description": "Moonflow Studio Framework Core",
     "unity": "2018.3",
     "dependencies": {},
