@@ -17,7 +17,7 @@ public class MoonflowPackageUpdater : Editor
     }
 
     private const string PackageName = "com.moonflow-studio.core";
-    private const string PackageURL = "https://git.code.tencent.com/Reguluz/MoonflowCore/blob/5c076cbf1d19475749c6c4da5ece3bc9d6d35730/package.json";
+    private const string PackageURL = "https://git.code.tencent.com/Reguluz/MoonflowCore/blob/master/package.json";
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
     private const string CheckForUpdateText = "Moonflow/Core/Check for updates";
     private const string UpdateText = "Moonflow/Core/Update";
