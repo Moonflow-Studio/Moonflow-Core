@@ -5,7 +5,6 @@
     "description": "Moonflow Studio Framework Core",
     "unity": "2018.3",
     "dependencies": {},
-    "type": "module",
     "author": {
         "name": "Reguluz",
         "email": "reguluz14@gmail.com"
