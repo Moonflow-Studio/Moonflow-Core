@@ -1,6 +1,6 @@
-namespace Moonflow
+namespace Moonflow.Core
 {
-    public interface MFRuntimeData
+    public interface IMFRuntimeData
     {
         public void OnInitial();
         public void OnTickUpdate();
