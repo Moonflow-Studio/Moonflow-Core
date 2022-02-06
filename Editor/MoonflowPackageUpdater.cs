@@ -24,6 +24,7 @@ public class MoonflowPackageUpdater : Editor
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
     private const string CheckForUpdateText = "Moonflow/Core/检查更新";
     private const string UpdateText = "Moonflow/Core/更新";
+    private const string ForceUpdateText = "Moonflow/Core/强制最新";
     private const string GitURL = "https://gitee.com/reguluz/moonflow-core.git";
     private static Version remoteVersion;
 
@@ -113,5 +114,33 @@ public class MoonflowPackageUpdater : Editor
     private static bool CanUpdate()
     {
         return EditorPrefs.GetBool(CanUpdateKey);
+    }
+    
+    [MenuItem(ForceUpdateText, false, 0)]
+    public static void ForceUpdate()
+    {
+        string path = Application.dataPath;
+        path = Directory.GetParent(path).FullName;
+        path = Path.Combine(path, "Packages", "manifest.json");
+        if (File.Exists(path))
+        {
+            string text = File.ReadAllText(path);
+            Regex regex = new Regex($"\"{PackageName}\": \"(.+)\"");
+            Match match = regex.Match(text);
+            string versionText = match.Groups[1].Value;
+            // text = regex.Replace(text, , 1);
+            // Version version = Version.Parse(versionText);
+            if (versionText.Contains("master"))
+            {
+                text = text.Replace(versionText, $"{GitURL}");
+            }
+            else
+            {
+                text = text.Replace(versionText, $"{GitURL}#master");
+            }
+            File.WriteAllText(path, text);
+            AssetDatabase.Refresh();
+            MFDebug.Log($"Moonflow Core已升级到最新版");
+        }
     }
 }
