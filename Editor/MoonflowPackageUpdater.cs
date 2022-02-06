@@ -97,10 +97,10 @@ public class MoonflowPackageUpdater : Editor
         if (File.Exists(path))
         {
             string text = File.ReadAllText(path);
-            Regex regex = new Regex($"\"{PackageName}\": \"{GitURL}#(.+)\"");
-            // Match match = regex.Match(text);
-            // string versionText = match.Groups[1].Value;
-            text = regex.Replace(text, remoteVersion.ToString(), 1);
+            Regex regex = new Regex($"\"{PackageName}\": \"(.+)\"");
+            Match match = regex.Match(text);
+            string versionText = match.Groups[1].Value;
+            // text = regex.Replace(text, , 1);
             // Version version = Version.Parse(versionText);
             // int index = text.IndexOf("\"lock\"");
             // int start = index + text.Substring(index).IndexOf("\"" + PackageName + "\"");
@@ -118,7 +118,7 @@ public class MoonflowPackageUpdater : Editor
             //     }
             // }
             //
-            // text = text.Replace(entry, "");
+            text = text.Replace(versionText, $"{GitURL}#{remoteVersion}");
             File.WriteAllText(path, text);
             AssetDatabase.Refresh();
             MFDebug.Log($"Moonflow Core已升级到{remoteVersion}版");
