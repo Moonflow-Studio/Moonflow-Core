@@ -22,8 +22,8 @@ public class MoonflowPackageUpdater : Editor
     private const string PackageName = "com.moonflow-studio.core";
     private const string PackageURL = "https://gitee.com/reguluz/moonflow-core/raw/master/package.json";
     private const string CanUpdateKey = "Moonflow.Core.CanUpdate";
-    private const string CheckForUpdateText = "Moonflow/Core/Check for updates";
-    private const string UpdateText = "Moonflow/Core/Update";
+    private const string CheckForUpdateText = "Moonflow/Core/检查更新";
+    private const string UpdateText = "Moonflow/Core/更新";
     private const string GitURL = "https://gitee.com/reguluz/moonflow-core.git";
     private static Version remoteVersion;
 
