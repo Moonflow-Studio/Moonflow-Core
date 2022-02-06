@@ -1,10 +1,11 @@
 {
     "name": "com.moonflow-studio.core",
     "displayName": "MF Framework Core",
-    "version": "0.0.2",
+    "version": "0.0.2b",
     "description": "Moonflow Studio Framework Core",
     "unity": "2018.3",
     "dependencies": {},
+    "type": "module",
     "author": {
         "name": "Reguluz",
         "email": "reguluz14@gmail.com"
