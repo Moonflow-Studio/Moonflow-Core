@@ -2,16 +2,28 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Threading.Tasks;
+using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class MFLoadManager : MFSingleton<MFLoadManager>
+public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneRefresh
 {
     public Dictionary<string, int> hashDict;
     public Dictionary<int, MFAssetData> assetDict;
+    public Dictionary<string, AssetBundle> loadedBundle;
     public delegate void LoadCallback(Object asset);
 
-    public static T Load<T>(string bundlePath, string name, LoadCallback cb = null) where T:UnityEngine.Object
+    public override MFLoadManager GetInstance()
+    {
+        var instance = base.GetInstance();
+        instance.hashDict = new Dictionary<string, int>();
+        instance.assetDict = new Dictionary<int, MFAssetData>();
+        instance.loadedBundle = new Dictionary<string, AssetBundle>();
+        return base.GetInstance();
+    }
+
+    public static T Load<T>(string bundlePath, string name, bool immediate = false, LoadCallback cb = null) where T:UnityEngine.Object
     {
         string combinedpath = bundlePath + name;
         int hash = GetHash(combinedpath);
@@ -30,20 +42,77 @@ public class MFLoadManager : MFSingleton<MFLoadManager>
                 hash = hash,
             };
             //TODO:异步加载asset
-            assetInfo.asset = AssetBundle.LoadFromFile(combinedpath);//+ ".assetbundle"
+            if (immediate)
+            {
+                RealLoad(bundlePath, name, assetInfo);
+            }
+            else
+            {
+                RealLoadAsync(bundlePath, name, assetInfo);
+            }
 
+            cb?.Invoke(assetInfo.asset);
             assetInfo.refCount = 1;
             singleton.assetDict.Add(hash, assetInfo);
-            if(cb!=null)cb(assetInfo.asset);
             return assetInfo.asset as T;
-            
         }
     }
 
-    public void RealLoadFromAssetBundle(string combinedPath)
+    private static void RealLoad(string bundlePath, string name, MFAssetData assetInfo)
     {
-        
+        singleton.loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        if (bundle == null)
+        {
+            bundle = AssetBundle.LoadFromFile(GetStreamingAssetsPath() + bundlePath);
+            singleton.loadedBundle.Add(bundlePath, bundle);
+        }
+        assetInfo.asset = bundle.LoadAsset(name);
     }
+
+    private static void RealLoadAsync(string bundlePath, string name, MFAssetData assetInfo)
+    {
+        singleton.loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        if (bundle == null)
+        {
+            var bundleLoadState = AssetBundle.LoadFromFileAsync(GetStreamingAssetsPath() + bundlePath);
+            if (bundleLoadState.isDone)
+            {
+                var loadAssetState = bundleLoadState.assetBundle.LoadAssetAsync(name);
+                if (loadAssetState.isDone)
+                {
+                    assetInfo.asset = loadAssetState.asset;
+                }
+                singleton.loadedBundle.Add(bundlePath, bundle);
+            }
+        }
+        else
+        {
+            var loadAssetState = bundle.LoadAssetAsync(name);
+            if (loadAssetState.isDone)
+            {
+                assetInfo.asset = loadAssetState.asset;
+            }
+        }
+    }
+
+    public void OnEnterScene()
+    {
+        // throw new NotImplementedException();
+    }
+
+    public void OnLeaveScene()
+    {
+        UnloadBundles();
+    }
+    private static void UnloadBundles()
+    {
+        foreach (var bundlePair in singleton.loadedBundle)
+        {
+            bundlePair.Value.Unload(false);
+        }
+        singleton.loadedBundle.Clear();
+    }
+
 
     private static int GetHash(string str)
     {
@@ -53,7 +122,10 @@ public class MFLoadManager : MFSingleton<MFLoadManager>
             return value;
         }
 
+        //C#原生hash算法
         int hash = str.GetHashCode();
+        
+        //***其他算法
         // ulong hash = 5381;
         // int len = str.Length;
         // int ser = 0;
@@ -80,5 +152,21 @@ public class MFLoadManager : MFSingleton<MFLoadManager>
         // } 
         singleton.hashDict.Add(str, hash);
         return hash; 
+    }
+
+    
+    private static string GetStreamingAssetsPath()
+    {
+        string StreamingAssetsPath =
+#if UNITY_EDITOR
+            Application.streamingAssetsPath + "/";
+#elif UNITY_ANDROID
+        "jar:file://" + Application.dataPath + "!/assets/";
+#elif UNITY_IPHONE
+        Application.dataPath + "/Raw/";
+#else
+        string.Empty;
+#endif
+        return StreamingAssetsPath;
     }
 }
