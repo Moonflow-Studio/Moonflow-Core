@@ -9,8 +9,9 @@ public abstract class MFSingleton
 public abstract class MFSingleton<T>: MFSingleton where T:new()
 {
     protected static T singleton;
-    public T GetInstance()
+    public static T GetInstance()
     {
+        if (singleton == null) singleton = new T();
         return singleton;
     }
 }
