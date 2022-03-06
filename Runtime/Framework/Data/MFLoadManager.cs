@@ -7,7 +7,7 @@ using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneRefresh
+public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 {
     public Dictionary<int, MFAssetData> assetDict;
     public Dictionary<string, AssetBundle> loadedBundle;
