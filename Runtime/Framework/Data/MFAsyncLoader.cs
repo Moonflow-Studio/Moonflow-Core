@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace MoonflowCore.Runtime.Framework.Data
 {
+    /// <summary>
+    /// 资产异步加载器
+    /// </summary>
     public class MFAsyncLoader: MonoBehaviour
     {
         public static MFAsyncLoader singleton;

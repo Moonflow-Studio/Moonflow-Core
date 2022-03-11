@@ -2,6 +2,9 @@
 using UnityEngine;
 namespace Moonflow.Core
 {
+    /// <summary>
+    /// 自用Debug封装
+    /// </summary>
     public static class MFDebug
     {
         public static void Log(string context)
@@ -24,8 +27,13 @@ namespace Moonflow.Core
             Debug.LogError(context);    
 #endif
         }
-
-        public static void ABLoadError(string objName, string abPath)
+        
+        /// <summary>
+        /// Assetbundle专用LogError
+        /// </summary>
+        /// <param name="objName">被加载的对象</param>
+        /// <param name="abPath">被加载的路径</param>
+        public static void LoadErrorAB(string objName, string abPath)
         {
             LogError($"未能加载到资源{objName}, 从{abPath}");
         }

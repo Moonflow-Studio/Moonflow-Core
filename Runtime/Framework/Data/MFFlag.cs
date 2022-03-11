@@ -1,5 +1,8 @@
 namespace MoonflowCore.Runtime.Framework.Data
 {
+    /// <summary>
+    /// 封装Flag系统
+    /// </summary>
     public class MFFlag
     {
         private uint flag;

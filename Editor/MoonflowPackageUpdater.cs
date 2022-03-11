@@ -117,7 +117,7 @@ public class MoonflowPackageUpdater : Editor
     }
     
     [MenuItem(ForceUpdateText)]
-    public static void ForceUpdate()
+    private static void ForceUpdate()
     {
         string path = Application.dataPath;
         path = Directory.GetParent(path).FullName;

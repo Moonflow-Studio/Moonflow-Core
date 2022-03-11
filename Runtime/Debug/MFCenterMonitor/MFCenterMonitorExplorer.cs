@@ -18,7 +18,7 @@ namespace Moonflow.Core
         private GUIStyle _tableTitleStyle;
         private bool _initialized = false;
         [MenuItem("Moonflow/控制中心")]
-        public static void ShowWindow()
+        private static void ShowWindow()
         {
             EditorWindow window = EditorWindow.GetWindow(typeof(MFCenterMonitorExplorer));
             window.Show();

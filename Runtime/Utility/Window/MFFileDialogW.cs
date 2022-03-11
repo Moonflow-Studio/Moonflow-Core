@@ -6,6 +6,9 @@ using Application = UnityEngine.Application;
 
 namespace Moonflow.Utility
 {
+    /// <summary>
+    /// 打开“选择文件”功能
+    /// </summary>
     public class MFFileDialogW
     {
         #if UNITY_STANDALONE_WIN

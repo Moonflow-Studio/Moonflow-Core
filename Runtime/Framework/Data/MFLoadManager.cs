@@ -7,10 +7,13 @@ using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
+/// <summary>
+/// 封装加载管理器，单循环基于场景加载
+/// </summary>
 public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 {
-    public Dictionary<int, MFAssetData> assetDict;
-    public Dictionary<string, AssetBundle> loadedBundle;
+    private Dictionary<int, MFAssetData> _assetDict;
+    private Dictionary<string, AssetBundle> _loadedBundle;
     public delegate void LoadCallback(Object asset);
 
     public MFLoadManager()
@@ -20,18 +23,27 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 
     private void Init()
     {
-        assetDict = new Dictionary<int, MFAssetData>();
-        loadedBundle = new Dictionary<string, AssetBundle>();
+        _assetDict = new Dictionary<int, MFAssetData>();
+        _loadedBundle = new Dictionary<string, AssetBundle>();
     }
 
+    /// <summary>
+    /// 加载资源
+    /// </summary>
+    /// <param name="bundlePath">资源所在Bundle路径</param>
+    /// <param name="name">资源名</param>
+    /// <param name="immediate">是否立刻加载（否则异步加载）</param>
+    /// <param name="cb">加载完毕需要执行的回调</param>
+    /// <typeparam name="T">被加载的类型</typeparam>
+    /// <returns></returns>
     public static T Load<T>(string bundlePath, string name, bool immediate = false, LoadCallback cb = null) where T:UnityEngine.Object
     {
         string combinedpath = bundlePath + name;
         int hash = GetHash(combinedpath);
-        if (singleton.assetDict.TryGetValue(hash, out MFAssetData data))
+        if (singleton._assetDict.TryGetValue(hash, out MFAssetData data))
         {
             data.refCount++;
-            singleton.assetDict[hash] = data;
+            singleton._assetDict[hash] = data;
             return data.asset as T;
         }
         else
@@ -61,18 +73,18 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 //             }
             cb?.Invoke(assetInfo.asset);
             assetInfo.refCount = 1;
-            singleton.assetDict.Add(hash, assetInfo);
+            singleton._assetDict.Add(hash, assetInfo);
             return assetInfo.asset as T;
         }
     }
 
     private static void RealLoadFromBundle(string bundlePath, string name, ref MFAssetData assetInfo)
     {
-        singleton.loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        singleton._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
         if (bundle == null)
         {
             bundle = AssetBundle.LoadFromFile(GetStreamingAssetsPath() + bundlePath);
-            singleton.loadedBundle.Add(bundlePath, bundle);
+            singleton._loadedBundle.Add(bundlePath, bundle);
         }
         assetInfo.asset = bundle.LoadAsset(name);
     }
@@ -83,7 +95,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 
     private static void RealLoadFromBundleAsync(string bundlePath, string name, ref MFAssetData assetInfo)
     {
-        singleton.loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        singleton._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
         if (bundle == null)
         {
             var bundleLoadState = AssetBundle.LoadFromFileAsync(GetStreamingAssetsPath() + bundlePath);
@@ -94,7 +106,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
                 {
                     assetInfo.asset = loadAssetState.asset;
                 }
-                singleton.loadedBundle.Add(bundlePath, bundle);
+                singleton._loadedBundle.Add(bundlePath, bundle);
             }
         }
         else
@@ -126,11 +138,11 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     }
     private static void UnloadBundles()
     {
-        foreach (var bundlePair in singleton.loadedBundle)
+        foreach (var bundlePair in singleton._loadedBundle)
         {
             bundlePair.Value.Unload(false);
         }
-        singleton.loadedBundle.Clear();
+        singleton._loadedBundle.Clear();
     }
 
 

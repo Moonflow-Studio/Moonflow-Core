@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
 
+/// <summary>
+/// 资产Runtime管理类
+/// </summary>
 public class MFAssetData
 {
     public string name;

@@ -4,8 +4,19 @@ using UnityEngine;
 
 namespace Moonflow
 {
+   /// <summary>
+   /// 编辑器界面拓展
+   /// </summary>
    public static class MFEditorUI
    {
+      /// <summary>
+      /// 分页列表
+      /// </summary>
+      /// <param name="objects">被操作列表</param>
+      /// <param name="index">当前序号</param>
+      /// <param name="foldout">展开状态</param>
+      /// <param name="pageNumber">页数</param>
+      /// <typeparam name="T">被操作列表的类型</typeparam>
       public static void DrawFlipList<T>(List<T> objects, ref int index, ref bool foldout, int pageNumber) where T:Object
       {
          using (new EditorGUILayout.HorizontalScope())

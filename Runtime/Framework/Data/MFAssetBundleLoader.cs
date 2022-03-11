@@ -3,27 +3,41 @@ using UnityEngine;
 
 namespace MoonflowCore.Runtime.Framework.Data
 {
+    /// <summary>
+    /// 封装AssetBundle加载
+    /// </summary>
     public class MFAssetBundleLoader
     {
         static Dictionary<string, AssetBundle> DicAssetBundle = new Dictionary<string, AssetBundle>(); 
 
-        public static T LoadResource<T>(string assetBundleName, string assetBundleGroupName) where T : Object
+        /// <summary>
+        /// 加载指定类型AssetBundle资产
+        /// </summary>
+        /// <param name="resName">被加载的资源名</param>
+        /// <param name="bundlePath">被加载的AssetBundle路径</param>
+        /// <typeparam name="T">指定加载的资源类型</typeparam>
+        /// <returns>返回指定资源（如为空则返回default）</returns>
+        public static T LoadResource<T>(string resName, string bundlePath) where T : Object
         {
-            if (string.IsNullOrEmpty(assetBundleGroupName))
+            if (string.IsNullOrEmpty(bundlePath))
             {
                 return default(T);
             }
 
-            if (!DicAssetBundle.TryGetValue(assetBundleGroupName, out AssetBundle assetbundle))
+            if (!DicAssetBundle.TryGetValue(bundlePath, out AssetBundle assetbundle))
             {
-                assetbundle = AssetBundle.LoadFromFile(GetStreamingAssetsPath() + assetBundleGroupName);//+ ".assetbundle"
-                DicAssetBundle.Add(assetBundleGroupName, assetbundle);
+                assetbundle = AssetBundle.LoadFromFile(GetStreamingAssetsPath() + bundlePath);//+ ".assetbundle"
+                DicAssetBundle.Add(bundlePath, assetbundle);
             }
-            object obj = assetbundle.LoadAssetAsync(assetBundleName, typeof(T));
+            object obj = assetbundle.LoadAssetAsync(resName, typeof(T));
             var one = obj as T; 
             return one;
         }
 
+        /// <summary>
+        /// 卸载AssetBundle包
+        /// </summary>
+        /// <param name="assetBundleGroupName">被卸载的AssetBundle名</param>
         public static void UnLoadResource(string assetBundleGroupName)
         {
             if (DicAssetBundle.TryGetValue(assetBundleGroupName, out AssetBundle assetbundle))
@@ -38,6 +52,10 @@ namespace MoonflowCore.Runtime.Framework.Data
             }
         }
 
+        /// <summary>
+        /// 获取指定平台StreamingAssets路径
+        /// </summary>
+        /// <returns>返回指定平台StreamingAssets路径</returns>
         public static string GetStreamingAssetsPath()
         {
             string StreamingAssetsPath =

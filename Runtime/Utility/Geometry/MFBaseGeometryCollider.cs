@@ -2,6 +2,9 @@ using UnityEngine;
 
 namespace Moonflow.Utility.Geometry
 {
+    /// <summary>
+    /// 简单集合碰撞检测
+    /// </summary>
     public class MFBaseGeometryCollider
     {
         //2D
@@ -24,6 +27,13 @@ namespace Moonflow.Utility.Geometry
             return Vector3.Distance(targetPos, center) < rad;
         }
         
+        /// <summary>
+        /// 立方体碰撞检测
+        /// </summary>
+        /// <param name="targetPos">被检测的点</param>
+        /// <param name="objToWorldMatrix">碰撞体的Obj2World转换矩阵</param>
+        /// <param name="size">碰撞体本地尺寸</param>
+        /// <returns></returns>
         public bool Box(Vector3 targetPos, Matrix4x4 objToWorldMatrix, Vector3 size)
         {
             var inverseMatrix = Matrix4x4.Inverse(objToWorldMatrix);
@@ -32,6 +42,15 @@ namespace Moonflow.Utility.Geometry
             return localPos.x < size.x && localPos.y < size.y && localPos.z < size.z;
         }
         
+        /// <summary>
+        /// 扇形碰撞检测
+        /// </summary>
+        /// <param name="targetPos">被检测的点</param>
+        /// <param name="center">扇形圆心</param>
+        /// <param name="direction">扇形方向</param>
+        /// <param name="radius">扇形半径</param>
+        /// <param name="angle">扇形角度</param>
+        /// <returns></returns>
         public bool Sector(Vector3 targetPos, Vector3 center, Vector3 direction, float radius, float angle)
         {
             var dir = targetPos - center;
