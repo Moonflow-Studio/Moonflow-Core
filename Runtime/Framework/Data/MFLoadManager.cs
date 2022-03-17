@@ -57,11 +57,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         {
             MFAssetData assetInfo = new MFAssetData()
             {
-                resInfo = new MFResInfo()
-                {
-                    path = bundlePath,
-                    name = name,
-                },
+                resInfo = new MFResInfo(name, bundlePath),
                 hash = hash,
             };
             //TODO:异步加载asset
