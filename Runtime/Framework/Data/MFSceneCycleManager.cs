@@ -7,8 +7,11 @@ namespace MoonflowCore.Runtime.Framework.Data
     /// </summary>
     public class MFSceneCycleManager: MFSingleton<MFSceneCycleManager>
     {
-        public List<IMFSceneCycle> sceneCycleSystems { get;}
+        private List<IMFSceneCycle> sceneCycleSystems { get;}
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MFSceneCycleManager()
         {
             sceneCycleSystems = new List<IMFSceneCycle>();

@@ -6,6 +6,10 @@ using UnityEngine;
 
 namespace Moonflow.Utility
 {
+    /// <summary>
+    /// 文件加密功能
+    /// </summary>
+    /// <typeparam name="T">加密的类</typeparam>
     public class MFFileCrypto<T>
     {
         private static string key = "12348578902223367877723456789012";
@@ -13,8 +17,8 @@ namespace Moonflow.Utility
         /// <summary>
         /// 从工程相对路径解码一个文件
         /// </summary>
-        /// <param name="relationPath">路径以"Assets/"开头</param>
-        /// <returns></returns>
+        /// <param name="relationPath">文件的相对路径</param>
+        /// <returns>返回解码的类实例</returns>
         public static T Decrypt(string relationPath)
         {
             byte[] keyArray = UTF8Encoding.UTF8.GetBytes(key);
@@ -35,9 +39,10 @@ namespace Moonflow.Utility
         /// <summary>
         /// 向工程相对路径加密写入一个文件
         /// </summary>
-        /// <param name="relationPath">路径以"Assets/"开头</param>
+        /// <param name="waitForEncrypt">被执行加密的实例</param>
+        /// <param name="relationPath">生成文件的相对路径</param>
         /// <returns></returns>
-
+        
         public static void EncryptFile(T waitForEncrypt, string relationPath)
         {
             string json_Text = JsonUtility.ToJson(waitForEncrypt);
@@ -60,7 +65,7 @@ namespace Moonflow.Utility
         /// <summary>
         /// 从Resource中简单读取一个基于Json存储的文件
         /// </summary>
-        /// <param name="relationPath">路径是Resources下的相对路径</param>
+        /// <param name="relationPath">读取路径，是Resources下的相对路径</param>
         /// <returns></returns>
         public static T JsonResLoad(string relationPath)
         {
@@ -79,7 +84,8 @@ namespace Moonflow.Utility
         /// <summary>
         /// 以Json格式简单存储自定格式到Resources文件夹内
         /// </summary>
-        /// <param name="relationPath">路径是Resources下的相对路径</param>
+        /// <param name="waitForSave">待保存的类</param>
+        /// <param name="relationPath">保存路径，是Resources下的相对路径</param>
         /// <returns></returns>+
         public static void JsonResSave(T waitForSave, string relationPath)
         {

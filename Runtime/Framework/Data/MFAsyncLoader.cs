@@ -9,13 +9,21 @@ namespace MoonflowCore.Runtime.Framework.Data
     /// </summary>
     public class MFAsyncLoader: MonoBehaviour
     {
-        public static MFAsyncLoader singleton;
+        private static MFAsyncLoader singleton;
 
         private void Awake()
         {
             singleton = this;
         }
-
+        
+        /// <summary>
+        /// 异步加载bundle资源
+        /// </summary>
+        /// <param name="bundlePath">bundle路径</param>
+        /// <param name="name">资源名</param>
+        /// <param name="assetInfo">资源控制信息</param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public static IEnumerator LoadFromResourceAsync<T>(string bundlePath, string name, MFAssetData assetInfo)
             where T : UnityEngine.Object
         {

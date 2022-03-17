@@ -9,7 +9,13 @@ namespace Moonflow
     [Serializable]
     public struct MFRangeValue<T>
     {
+        /// <summary>
+        /// 当前值
+        /// </summary>
         public T current;
+        /// <summary>
+        /// 最大值
+        /// </summary>
         public T max;
     }
 }

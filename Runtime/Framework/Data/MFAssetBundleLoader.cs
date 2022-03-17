@@ -56,7 +56,7 @@ namespace MoonflowCore.Runtime.Framework.Data
         /// 获取指定平台StreamingAssets路径
         /// </summary>
         /// <returns>返回指定平台StreamingAssets路径</returns>
-        public static string GetStreamingAssetsPath()
+        private static string GetStreamingAssetsPath()
         {
             string StreamingAssetsPath =
 #if UNITY_EDITOR

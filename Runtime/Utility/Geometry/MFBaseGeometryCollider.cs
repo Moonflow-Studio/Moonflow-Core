@@ -7,12 +7,26 @@ namespace Moonflow.Utility.Geometry
     /// </summary>
     public class MFBaseGeometryCollider
     {
-        //2D
+        /// <summary>
+        /// 平面圆碰撞检测
+        /// </summary>
+        /// <param name="targetPos"></param>
+        /// <param name="center"></param>
+        /// <param name="rad"></param>
+        /// <returns></returns>
         public bool Circle(Vector2 targetPos, Vector2 center, float rad)
         {
             return Vector2.Distance(targetPos, center) < rad;
         }
         
+        /// <summary>
+        /// 平面三角形碰撞检测
+        /// </summary>
+        /// <param name="targetPos"></param>
+        /// <param name="center"></param>
+        /// <param name="left"></param>
+        /// <param name="forward"></param>
+        /// <returns></returns>
         public bool Rectangle(Vector2 targetPos, Vector2 center, Vector2 left, Vector2 forward)
         {
             var dir = targetPos - center;
@@ -21,7 +35,13 @@ namespace Moonflow.Utility.Geometry
         }
         
         
-        //3D
+        /// <summary>
+        /// 球形碰撞检测
+        /// </summary>
+        /// <param name="targetPos"></param>
+        /// <param name="center"></param>
+        /// <param name="rad"></param>
+        /// <returns></returns>
         public bool Sphere(Vector3 targetPos, Vector3 center, float rad)
         {
             return Vector3.Distance(targetPos, center) < rad;

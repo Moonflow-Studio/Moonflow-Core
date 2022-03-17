@@ -14,8 +14,15 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 {
     private Dictionary<int, MFAssetData> _assetDict;
     private Dictionary<string, AssetBundle> _loadedBundle;
+    
+    /// <summary>
+    /// 加载回调委托
+    /// </summary>
     public delegate void LoadCallback(Object asset);
 
+    /// <summary>
+    /// 初始化
+    /// </summary>
     public MFLoadManager()
     {
         Init();
@@ -50,8 +57,11 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         {
             MFAssetData assetInfo = new MFAssetData()
             {
-                path = bundlePath,
-                name = name,
+                resInfo = new MFResInfo()
+                {
+                    path = bundlePath,
+                    name = name,
+                },
                 hash = hash,
             };
             //TODO:异步加载asset
@@ -126,12 +136,17 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
             assetInfo.asset = resLoadState.asset;
         }
     }
-    
+    /// <summary>
+    /// 加载管理器进场景时的操作
+    /// </summary>
     public void OnEnterScene()
     {
         // throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// 加载管理器出场景时的操作
+    /// </summary>
     public void OnLeaveScene()
     {
         UnloadBundles();
@@ -198,7 +213,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         //     case 0: break; 
         // } 
         // singleton.hashDict.Add(str, hash);
-        return hash; 
+        // return hash; 
     }
 
     

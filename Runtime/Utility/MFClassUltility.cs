@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Moonflow.Utility
 {
+    /// <summary>
+    /// 类辅助功能
+    /// </summary>
     public class MFClassUltility
     {
         /// <summary>
@@ -10,7 +13,7 @@ namespace Moonflow.Utility
         /// </summary>
         /// <param name="obj">被拷贝的对象</param>
         /// <typeparam name="T">被拷贝对象的类型</typeparam>
-        /// <returns></returns>
+        /// <returns>返回被拷贝的对象</returns>
         public static T DeepCopyByReflect<T>(T obj)
         {
             if (obj is string || obj.GetType().IsValueType) return obj;
@@ -24,7 +27,11 @@ namespace Moonflow.Utility
             }
             return (T)retval;
         }
-        
+        /// <summary>
+        /// 获取枚举的数量
+        /// </summary>
+        /// <param name="enumType">枚举的类型</param>
+        /// <returns>返回数量</returns>
         public static int GetEnumNum(Type enumType)
         {
             return enumType.GetFields(BindingFlags.Public | BindingFlags.Static).Length;

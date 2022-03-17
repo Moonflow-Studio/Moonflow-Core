@@ -7,6 +7,10 @@ namespace Moonflow.Core
     /// </summary>
     public static class MFDebug
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public static void Log(string context)
         {
 #if MF_DEBUG
@@ -14,6 +18,10 @@ namespace Moonflow.Core
 #endif
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public static void Log(float context)
         {
 #if MF_DEBUG
@@ -21,6 +29,10 @@ namespace Moonflow.Core
 #endif
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="context"></param>
         public static void LogError(string context)
         {
 #if MF_DEBUG
@@ -37,6 +49,10 @@ namespace Moonflow.Core
         {
             LogError($"未能加载到资源{objName}, 从{abPath}");
         }
+        /// <summary>
+        /// 封装Warning
+        /// </summary>
+        /// <param name="context"></param>
         public static void LogWarning(string context)
         {
 #if MF_DEBUG

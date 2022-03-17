@@ -11,11 +11,19 @@ using UnityEngine;
 using PackageInfo = UnityEditor.PackageManager.PackageInfo;
 using Moonflow.Core;
 
-
+/// <summary>
+/// 更新器
+/// </summary>
 public class MoonflowPackageUpdater : Editor
 {
-        public class Package
+    /// <summary>
+    /// Package属性
+    /// </summary>
+    public class Package
     {
+        /// <summary>
+        /// 版本号
+        /// </summary>
         public string version;
     }
 
@@ -89,7 +97,7 @@ public class MoonflowPackageUpdater : Editor
     }
 
     [MenuItem(UpdateText, false, 0)]
-    public static void Update()
+    private static void Update()
     {
         string path = Application.dataPath;
         path = Directory.GetParent(path).FullName;

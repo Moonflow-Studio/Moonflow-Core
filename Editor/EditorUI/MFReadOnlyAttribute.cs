@@ -3,7 +3,9 @@ using UnityEngine;
 
 namespace Moonflow.Utility
 {
-
+    /// <summary>
+    /// 面板只读Attribute
+    /// </summary>
     public class MFReadOnlyAttribute : PropertyAttribute
     {
     }
@@ -24,7 +26,12 @@ namespace Moonflow.Utility
         {
             return EditorGUI.GetPropertyHeight(property, label, true);
         }
-        
+        /// <summary>
+        /// 绘制
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="property"></param>
+        /// <param name="label"></param>
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             GUI.enabled = false;

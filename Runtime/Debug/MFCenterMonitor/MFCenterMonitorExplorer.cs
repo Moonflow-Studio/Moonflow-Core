@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Moonflow.Core
 {
+    /// <summary>
+    /// 单例查看器
+    /// </summary>
     public class MFCenterMonitorExplorer : EditorWindow
     {
         private int selected;
@@ -15,7 +18,7 @@ namespace Moonflow.Core
         // private MFUberPostFeature _uberPost;
         private List<MFEditorMonitor> systemList;
         private List<string> systemName;
-        private GUIStyle _tableTitleStyle;
+        // private GUIStyle _tableTitleStyle;
         private bool _initialized = false;
         [MenuItem("Moonflow/控制中心")]
         private static void ShowWindow()

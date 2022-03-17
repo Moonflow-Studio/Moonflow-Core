@@ -13,37 +13,117 @@ namespace Moonflow.Utility
     {
         #if UNITY_STANDALONE_WIN
         #region GetOpenFileName
+        /// <summary>
+        /// OpenFileName
+        /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public class OpenFileName
         {
+            /// <summary>
+            /// 
+            /// </summary>
             public int structSize = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public IntPtr dlgOwner = IntPtr.Zero;
+            /// <summary>
+            /// 
+            /// </summary>
             public IntPtr instance = IntPtr.Zero;
+            /// <summary>
+            /// 
+            /// </summary>
             public String filter = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public String customFilter = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public int maxCustFilter = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public int filterIndex = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public String file = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public int maxFile = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public String fileTitle = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public int maxFileTitle = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public String initialDir = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public String title = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public int flags = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public short fileOffset = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public short fileExtension = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public String defExt = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public IntPtr custData = IntPtr.Zero;
+            /// <summary>
+            /// 
+            /// </summary>
             public IntPtr hook = IntPtr.Zero;
+            /// <summary>
+            /// 
+            /// </summary>
             public String templateName = null;
+            /// <summary>
+            /// 
+            /// </summary>
             public IntPtr reservedPtr = IntPtr.Zero;
+            /// <summary>
+            /// 
+            /// </summary>
             public int reservedInt = 0;
+            /// <summary>
+            /// 
+            /// </summary>
             public int flagsEx = 0;
         }
-
+        
+        /// <summary>
+        /// 获取被打开的文件名
+        /// </summary>
+        /// <param name="ofn"></param>
+        /// <returns></returns>
         [DllImport("Comdlg32.dll", SetLastError = true, ThrowOnUnmappableChar = true, CharSet = CharSet.Auto)]
         public static extern bool GetOpenFileName([In, Out] OpenFileName ofn);
         
+        /// <summary>
+        /// 保存文件窗口
+        /// </summary>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
         public class SaveFileDlg: OpenFileName
         {

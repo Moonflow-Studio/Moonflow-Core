@@ -2,9 +2,18 @@ using UnityEngine;
 
 namespace MoonflowCore.Editor.Tool
 {
+    /// <summary>
+    /// 封装Gizmos
+    /// </summary>
     public class MFGizmos
     {
         private static readonly float m_Theta = 0.1f;
+        /// <summary>
+        /// 网格圆的绘制
+        /// </summary>
+        /// <param name="radius">圆半径</param>
+        /// <param name="local2world">绘制目标Local2World矩阵</param>
+        /// <param name="color">Gizmos颜色</param>
         public static void DrawWireCircle(float radius, Matrix4x4 local2world, Color color)
         {
             // 设置矩阵
