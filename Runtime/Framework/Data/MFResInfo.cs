@@ -22,4 +22,10 @@ public class MFResInfo
         _name = name;
         _path = path;
     }
+
+    public MFResInfo(MFResInfo info)
+    {
+        _name = info.Name;
+        _path = info.Path;
+    }
 }
