@@ -1,12 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 /// <summary>
 /// 资产Runtime管理类
 /// </summary>
-public class MFAssetData
+public class MFAssetData:IDisposable
 {
     /// <summary>
     /// 
@@ -28,4 +30,15 @@ public class MFAssetData
     /// 资源实例
     /// </summary>
     public UnityEngine.Object asset;
+
+
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+    }
+
+    ~MFAssetData()
+    {
+        Object.Destroy(asset);
+    }
 }

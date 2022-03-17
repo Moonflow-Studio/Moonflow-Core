@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Moonflow.Core;
 using MoonflowCore.Runtime.Framework.Data;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -37,15 +38,14 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     /// <summary>
     /// 加载资源
     /// </summary>
-    /// <param name="bundlePath">资源所在Bundle路径</param>
-    /// <param name="name">资源名</param>
+    /// <param name="resInfo"></param>
     /// <param name="immediate">是否立刻加载（否则异步加载）</param>
     /// <param name="cb">加载完毕需要执行的回调</param>
     /// <typeparam name="T">被加载的类型</typeparam>
     /// <returns></returns>
-    public static T Load<T>(string bundlePath, string name, bool immediate = false, LoadCallback cb = null) where T:UnityEngine.Object
+    public static T Load<T>(MFResInfo resInfo, bool immediate = false, LoadCallback cb = null) where T:UnityEngine.Object
     {
-        string combinedpath = bundlePath + name;
+        string combinedpath = resInfo.Path + resInfo.Name;
         int hash = GetHash(combinedpath);
         if (singleton._assetDict.TryGetValue(hash, out MFAssetData data))
         {
@@ -57,14 +57,14 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         {
             MFAssetData assetInfo = new MFAssetData()
             {
-                resInfo = new MFResInfo(name, bundlePath),
+                resInfo = new MFResInfo(resInfo),
                 hash = hash,
             };
             //TODO:异步加载asset
             // if (immediate)
             // {
 #if UNITY_EDITOR
-                RealLoadFromResource<T>(bundlePath, name, ref assetInfo);
+                RealLoadFromResource<T>(resInfo, ref assetInfo);
 #else
                 RealLoadFromBundle<T>(bundlePath, name, ref assetInfo);
 #endif
@@ -94,9 +94,9 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         }
         assetInfo.asset = bundle.LoadAsset(name);
     }
-    private static void RealLoadFromResource<T>(string bundlePath, string name, ref MFAssetData assetInfo) where T:Object
+    private static void RealLoadFromResource<T>(MFResInfo resInfo, ref MFAssetData assetInfo) where T:Object
     {
-        assetInfo.asset = Resources.Load<T>(bundlePath + name);
+        assetInfo.asset = Resources.Load<T>(resInfo.Path + resInfo.Name);
     }
 
     private static void RealLoadFromBundleAsync(string bundlePath, string name, ref MFAssetData assetInfo)
@@ -146,6 +146,25 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     public void OnLeaveScene()
     {
         UnloadBundles();
+    }
+
+    public static void UnloadAsset(MFResInfo resInfo)
+    {
+        string combinedpath = resInfo.Path + resInfo.Name;
+        int hash = GetHash(combinedpath);
+        if (singleton._assetDict.TryGetValue(hash, out MFAssetData data))
+        {
+            data.refCount--;
+            if (data.refCount == 0)
+            {
+                singleton._assetDict.Remove(hash);
+                data.Dispose();
+            }
+        }
+        else
+        {
+            MFDebug.LogError($"找不到实例{resInfo.Name}");
+        }
     }
     private static void UnloadBundles()
     {
