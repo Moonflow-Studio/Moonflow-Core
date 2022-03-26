@@ -61,8 +61,7 @@ public class MoonflowPackageUpdater : Editor
         Regex regex = new Regex("\"version\": \"(.+)\"");
         Match match = regex.Match(json);
         string versionText = match.Groups[1].Value;
-        Version version = Version.Parse(versionText);
-        return version;
+        return versionText != "" ? Version.Parse(versionText) : new Version("0.0.0");
     }
 
     private static async Task<Version> GetLocalVersion()
