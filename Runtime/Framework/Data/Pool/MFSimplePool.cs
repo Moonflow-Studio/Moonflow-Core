@@ -3,7 +3,7 @@ using Moonflow.Core;
 
 namespace MoonflowCore.Runtime.Framework
 {
-    public abstract class MFSimplePool<T>
+    public class MFSimplePool<T>
     {
         public string name;
         private Dictionary<int, T> _pool;
