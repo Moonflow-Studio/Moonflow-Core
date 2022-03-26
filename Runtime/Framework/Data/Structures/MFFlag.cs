@@ -34,5 +34,10 @@ namespace MoonflowCore.Runtime.Framework.Data
         {
             flag ^= t;
         }
+
+        public void Clear()
+        {
+            flag = 0;
+        }
     }
 }
