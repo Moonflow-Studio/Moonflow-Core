@@ -3,11 +3,14 @@ using Moonflow.Core;
 
 namespace MoonflowCore.Runtime.Framework
 {
-    public abstract class MFSimplePool<T>: MFSingleton where T:new()
+    public abstract class MFSimplePool<T>
     {
         public string name;
         private Dictionary<int, T> _pool;
-        
+        public MFSimplePool()
+        {
+            _pool = new Dictionary<int, T>();
+        }
         public void Add(T value, int id)
         {
             _pool.Add(id, value);
