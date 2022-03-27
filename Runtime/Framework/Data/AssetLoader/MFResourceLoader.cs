@@ -23,5 +23,14 @@ namespace MoonflowCore.Runtime.Framework.Data
             }
             return (T)asset;
         }
+
+        ~MFResourceLoader()
+        {
+            foreach (var pair in DicAssets)
+            {
+                Object.Destroy(pair.Value);
+            }
+            DicAssets.Clear();
+        }
     }
 }
