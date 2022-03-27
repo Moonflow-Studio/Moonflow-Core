@@ -6,7 +6,7 @@ namespace MoonflowCore.Runtime.Framework.Data
 {
     public class MFResourceLoader:MFSingleton<MFResourceLoader>
     {
-        private static Dictionary<string, Object> DicAssets;
+        private static Dictionary<string, Object> DicAssets = new Dictionary<string, Object>();
         /// <summary>
         /// 加载指定类型Resources资产
         /// </summary>
