@@ -6,7 +6,7 @@ namespace MoonflowCore.Runtime.Framework.Data
     /// <summary>
     /// 封装AssetBundle加载
     /// </summary>
-    public class MFAssetBundleLoader
+    public class MFAssetBundleLoader:MFSingleton<MFAssetBundleLoader>
     {
         static Dictionary<string, AssetBundle> DicAssetBundle = new Dictionary<string, AssetBundle>(); 
 

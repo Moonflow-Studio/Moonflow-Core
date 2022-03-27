@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MoonflowCore.Runtime.Framework.Data
 {
-    public class MFResourceLoader
+    public class MFResourceLoader:MFSingleton<MFResourceLoader>
     {
         private static Dictionary<string, Object> DicAssets;
         /// <summary>
