@@ -16,10 +16,10 @@ namespace MoonflowCore.Runtime.Framework.Data
         /// <returns>返回指定资源（如为空则返回default）</returns>
         public static T LoadResource<T>(string resName, string resPath) where T : Object
         {
-            if (!DicAssets.TryGetValue(resPath, out Object asset))
+            if (!DicAssets.TryGetValue(resPath + resName, out Object asset))
             {
                 asset = Resources.Load<T>(resPath);
-                DicAssets.Add(resPath, asset);
+                DicAssets.Add(resPath + resName, asset);
             }
             return (T)asset;
         }
