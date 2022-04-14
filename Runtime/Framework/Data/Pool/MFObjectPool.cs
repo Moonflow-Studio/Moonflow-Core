@@ -4,7 +4,7 @@ using Moonflow.Core;
 
 namespace MoonflowCore.Runtime.Framework
 {
-    public abstract class MFObjectPool<T, TT>
+    public class MFObjectPool<T, TT>
     {
         public string name;
         private Dictionary<T, TT> _pool;
