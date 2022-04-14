@@ -15,14 +15,16 @@ namespace MoonflowCore.Runtime.Framework
         {
             _pool.Add(id, value);
         }
-        public T GetValue(int hash)
+        public bool GetValue(int hash, out T target)
         {
             if (_pool.TryGetValue(hash, out T value))
             {
-                return value;
+                target = value;
+                return true;
             }
             MFDebug.LogError($"No value in pool {name}");
-            return default;
+            target = default;
+            return false;
         }
 
         public bool Contains(T value)
