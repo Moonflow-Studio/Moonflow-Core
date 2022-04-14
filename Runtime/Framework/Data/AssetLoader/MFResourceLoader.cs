@@ -18,7 +18,7 @@ namespace MoonflowCore.Runtime.Framework.Data
         {
             if (!DicAssets.TryGetValue(resPath + resName, out Object asset))
             {
-                asset = Resources.Load<T>(resPath);
+                asset = Resources.Load<T>(resPath + resName);
                 DicAssets.Add(resPath + resName, asset);
             }
             return (T)asset;
