@@ -15,6 +15,36 @@ namespace MoonflowCore.Runtime.Framework
         {
             _pool.Add(id, value);
         }
+        public bool Remove(int key)
+        {
+            if (_pool.TryGetValue(key, out T value))
+            {
+                _pool.Remove(key);
+                
+                return true;
+            }
+            else
+            {
+                MFDebug.LogError($"pool {name} don't have item {key.ToString()}");
+                return false;
+            }
+        }
+        public bool GetAndRemove(int key, out T v)
+        {
+            if (_pool.TryGetValue(key, out T value))
+            {
+                _pool.Remove(key);
+                v = value;
+                return true;
+            }
+            else
+            {
+                MFDebug.LogError($"pool {name} don't have item {key.ToString()}");
+                v = default;
+                return false;
+            }
+        }
+        
         public bool GetValue(int hash, out T target)
         {
             if (_pool.TryGetValue(hash, out T value))
