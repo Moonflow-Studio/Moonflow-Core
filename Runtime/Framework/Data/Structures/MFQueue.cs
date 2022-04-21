@@ -7,6 +7,8 @@ namespace MoonflowCore.Runtime.Framework.Data.Structures
     public class MFQueue<T> where T : new()
     {
         private Queue<T> _data;
+
+        public int Count => _data.Count;
         public MFQueue()
         {
             _data = new Queue<T>();
