@@ -81,6 +81,15 @@ public class MFBinaryWriter
         m_BinaryWriter.Write(value.a);
         return this;
     }
+
+    public MFBinaryWriter Write(Color32 value)
+    {
+        m_BinaryWriter.Write(value.r);
+        m_BinaryWriter.Write(value.g);
+        m_BinaryWriter.Write(value.b);
+        m_BinaryWriter.Write(value.a);
+        return this;
+    }
     public MFBinaryWriter WriteRGB(Color value)
     {
         m_BinaryWriter.Write(value.r);

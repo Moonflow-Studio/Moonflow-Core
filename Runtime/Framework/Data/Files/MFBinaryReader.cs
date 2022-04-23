@@ -82,6 +82,15 @@ public class MFBinaryReader
         value.a = m_BinaryReader.ReadSingle();
         return value;
     }
+    public Color32 ReadColor32()
+    {
+        Color32 value = new Color32();
+        value.r = m_BinaryReader.ReadByte();
+        value.g = m_BinaryReader.ReadByte();
+        value.b = m_BinaryReader.ReadByte();
+        value.a = m_BinaryReader.ReadByte();
+        return value;
+    }
     public void ReadRGB(ref Color value)
     {
         value.r = m_BinaryReader.ReadSingle();
