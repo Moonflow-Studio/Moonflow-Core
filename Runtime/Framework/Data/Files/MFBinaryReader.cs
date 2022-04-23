@@ -5,9 +5,14 @@ using UnityEngine;
 
 public class MFBinaryReader
 {
-    MemoryStream m_Stream = null;
-    BinaryReader m_BinaryReader = null;
-        
+    protected MemoryStream m_Stream = null;
+    protected BinaryReader m_BinaryReader = null;
+
+    public MFBinaryReader()
+    {
+        m_Stream = new MemoryStream(8192);
+        m_BinaryReader = new BinaryReader(m_Stream);
+    }
     public bool ReadBool()
     {
         return m_BinaryReader.ReadBoolean();
