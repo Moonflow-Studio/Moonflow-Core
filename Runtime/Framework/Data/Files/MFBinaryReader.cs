@@ -21,6 +21,11 @@ public class MFBinaryReader
     {
         return m_BinaryReader.ReadInt32();
     }
+
+    public short ReadShort()
+    {
+        return (short)m_BinaryReader.ReadInt16();
+    }
     public float ReadFloat()
     {
         return m_BinaryReader.ReadSingle();

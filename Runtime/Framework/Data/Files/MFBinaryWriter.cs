@@ -5,15 +5,26 @@ using UnityEngine;
 
 public class MFBinaryWriter
 {
-    MemoryStream m_Stream = null;
-    BinaryWriter m_BinaryWriter = null;
+    protected MemoryStream m_Stream = null;
+    protected BinaryWriter m_BinaryWriter = null;
         
+    public MFBinaryWriter()
+    {
+        m_Stream = new MemoryStream(8192);
+        m_BinaryWriter = new BinaryWriter(m_Stream);
+    }
     public MFBinaryWriter Write(bool value)
     {
         m_BinaryWriter.Write(value);
         return this;
     }
     public MFBinaryWriter Write(int value)
+    {
+        m_BinaryWriter.Write(value);
+        return this;
+    }
+
+    public MFBinaryWriter Write(short value)
     {
         m_BinaryWriter.Write(value);
         return this;
