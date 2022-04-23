@@ -29,6 +29,12 @@ public class MFBinaryWriter
         m_BinaryWriter.Write(value);
         return this;
     }
+    
+    public MFBinaryWriter Write(uint value)
+    {
+        m_BinaryWriter.Write((uint)value);
+        return this;
+    }
     public MFBinaryWriter Write(float value)
     {
         m_BinaryWriter.Write(value);
@@ -143,5 +149,6 @@ public class MFBinaryWriter
         Write(keyframe.outWeight);
         return this;
     }
+
     
 }

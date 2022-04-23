@@ -21,10 +21,13 @@ public class MFBinaryReader
     {
         return m_BinaryReader.ReadInt32();
     }
-
     public short ReadShort()
     {
         return (short)m_BinaryReader.ReadInt16();
+    }
+    public uint ReadUInt()
+    {
+        return (uint)m_BinaryReader.ReadInt32();
     }
     public float ReadFloat()
     {
