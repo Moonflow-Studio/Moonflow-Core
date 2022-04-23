@@ -8,100 +8,130 @@ public class MFBinaryReader
     MemoryStream m_Stream = null;
     BinaryReader m_BinaryReader = null;
         
-    public MFBinaryReader ReadBool(ref bool value)
+    public bool ReadBool()
     {
-        value = m_BinaryReader.ReadBoolean();
-        return this;
+        return m_BinaryReader.ReadBoolean();
     }
-    public MFBinaryReader ReadInt(ref int value)
+    public int ReadInt()
     {
-        value = m_BinaryReader.ReadInt32();
-        return this;
+        return m_BinaryReader.ReadInt32();
     }
-    public MFBinaryReader ReadFloat(ref float value)
+    public float ReadFloat()
     {
-        value = m_BinaryReader.ReadSingle();
-        return this;
+        return m_BinaryReader.ReadSingle();
     }
-    public MFBinaryReader ReadString(ref string value)
+    public string ReadString()
     {
-        value = m_BinaryReader.ReadString();
-        return this;
+        return m_BinaryReader.ReadString();
     }
-    public MFBinaryReader ReadVector2(ref Vector2 value)
+    public Vector2 ReadVector2()
     {
+        Vector2 value = Vector2.zero;
         value.x = m_BinaryReader.ReadSingle();
         value.y = m_BinaryReader.ReadSingle();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadVector2Int(ref Vector2Int value)
+    public Vector2Int ReadVector2Int()
     {
+        Vector2Int value = Vector2Int.zero;
         value.x = m_BinaryReader.ReadInt32();
         value.y = m_BinaryReader.ReadInt32();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadVector3(ref Vector3 value)
+    public Vector3 ReadVector3()
     {
+        Vector3 value = Vector3.zero;
         value.x = m_BinaryReader.ReadSingle();
         value.y = m_BinaryReader.ReadSingle();
         value.z = m_BinaryReader.ReadSingle();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadVector3Int(ref Vector3Int value)
+    public Vector3Int ReadVector3Int()
     {
+        Vector3Int value = Vector3Int.zero;
         value.x = m_BinaryReader.ReadInt32();
         value.y = m_BinaryReader.ReadInt32();
         value.z = m_BinaryReader.ReadInt32();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadVector4(ref Vector4 value)
+    public Vector4 ReadVector4()
     {
+        Vector4 value = Vector4.zero;
         value.x = m_BinaryReader.ReadSingle();
         value.y = m_BinaryReader.ReadSingle();
         value.z = m_BinaryReader.ReadSingle();
         value.w = m_BinaryReader.ReadSingle();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadColor(ref Color value)
+    public Color ReadColor()
     {
+        Color value = Color.black;
         value.r = m_BinaryReader.ReadSingle();
         value.g = m_BinaryReader.ReadSingle();
         value.b = m_BinaryReader.ReadSingle();
         value.a = m_BinaryReader.ReadSingle();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadRGB(ref Color value)
+    public void ReadRGB(ref Color value)
     {
         value.r = m_BinaryReader.ReadSingle();
         value.g = m_BinaryReader.ReadSingle();
         value.b = m_BinaryReader.ReadSingle();
-        return this;
     }
-    public MFBinaryReader ReadQuaternion(ref Quaternion value)
+    public Quaternion ReadQuaternion()
     {
+        Quaternion value = Quaternion.identity;
         value.x = m_BinaryReader.ReadSingle();
         value.y = m_BinaryReader.ReadSingle();
         value.z = m_BinaryReader.ReadSingle();
         value.w = m_BinaryReader.ReadSingle();
-        return this;
+        return value;
     }
-    public MFBinaryReader ReadMatrix(ref Matrix4x4 value)
+    public Matrix4x4 ReadMatrix()
     {
+        Matrix4x4 value = new Matrix4x4();
         value = Matrix4x4.identity;
         for (int i = 0; i < 16; i++)
         {
             value[i] = m_BinaryReader.ReadSingle();
         }
-        return this;
+        return value;
     }
 
-    public MFBinaryReader ReadAABB(ref Bounds aabb)
+    public Bounds ReadAABB()
     {
-        Vector3 min = Vector3.zero;
-        Vector3 max = Vector3.zero;
-        ReadVector3(ref min);
-        ReadVector3(ref max);
+        Bounds aabb = new Bounds();
+        Vector3 min = ReadVector3();
+        Vector3 max = ReadVector3();
         aabb.SetMinMax(min, max);
-        return this;
+        return aabb;
     }
+
+    public AnimationCurve ReadAnimationCurve()
+    {
+        AnimationCurve ac = new AnimationCurve();
+        ac.preWrapMode = (WrapMode)m_BinaryReader.ReadInt32();
+        ac.postWrapMode = (WrapMode)m_BinaryReader.ReadInt32();
+        int length = m_BinaryReader.ReadInt32();
+        ac.keys = new Keyframe[length];
+        for (int i = 0; i < length; i++)
+        {
+            ac.keys[i] = ReadKeyframe();
+        }
+        return ac;
+    }
+
+    public Keyframe ReadKeyframe()
+    {
+        Keyframe kf = new Keyframe();
+        kf.weightedMode = (WeightedMode)m_BinaryReader.ReadInt32();
+        kf.time = m_BinaryReader.ReadSingle();
+        kf.value = m_BinaryReader.ReadSingle();
+        kf.inTangent = m_BinaryReader.ReadSingle();
+        kf.inWeight = m_BinaryReader.ReadSingle();
+        kf.outTangent = m_BinaryReader.ReadSingle();
+        kf.outWeight = m_BinaryReader.ReadSingle();
+        return kf;
+    }
+
 }

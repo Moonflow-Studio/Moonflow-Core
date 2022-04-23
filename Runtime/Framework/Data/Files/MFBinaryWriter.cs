@@ -99,4 +99,29 @@ public class MFBinaryWriter
         Write(value.max);
         return this;
     }
+
+    public MFBinaryWriter Write(AnimationCurve value)
+    {
+        Write((int)value.preWrapMode);
+        Write((int)value.postWrapMode);
+        Write(value.length);
+        for (int i = 0; i < value.length; i++)
+        {
+            Write(value.keys[i]);
+        }
+        return this;
+    }
+
+    public MFBinaryWriter Write(Keyframe keyframe)
+    {
+        Write((int)keyframe.weightedMode);
+        Write(keyframe.time);
+        Write(keyframe.value);
+        Write(keyframe.inTangent);
+        Write(keyframe.inWeight);
+        Write(keyframe.outTangent);
+        Write(keyframe.outWeight);
+        return this;
+    }
+    
 }
