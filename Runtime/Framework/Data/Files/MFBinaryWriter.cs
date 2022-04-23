@@ -150,5 +150,36 @@ public class MFBinaryWriter
         return this;
     }
 
+    public MFBinaryWriter Write(Gradient g)
+    {
+        Write((int)g.mode);
+        Write(g.alphaKeys.Length);
+        Write(g.colorKeys.Length);
+        for (int i = 0; i < g.alphaKeys.Length; i++)
+        {
+            Write(g.alphaKeys[i]);
+        }
+
+        for (int i = 0; i < g.colorKeys.Length; i++)
+        {
+            Write(g.colorKeys[i]);
+        }
+        return this;
+    }
+
+    public MFBinaryWriter Write(GradientAlphaKey gak)
+    {
+        Write(gak.alpha);
+        Write(gak.time);
+        return this;
+    }
+
+    public MFBinaryWriter Write(GradientColorKey gck)
+    {
+        Write(gck.color);
+        Write(gck.time);
+        return this;
+    }
+
     
 }

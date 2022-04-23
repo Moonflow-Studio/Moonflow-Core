@@ -156,4 +156,39 @@ public class MFBinaryReader
         return kf;
     }
 
+    public Gradient ReadGradient()
+    {
+        Gradient g = new Gradient();
+        g.mode = (GradientMode)ReadInt();
+        int aL = ReadInt();
+        int cL = ReadInt();
+        g.alphaKeys = new GradientAlphaKey[aL];
+        g.colorKeys = new GradientColorKey[cL];
+        for (int i = 0; i < aL; i++)
+        {
+            g.alphaKeys[i] = ReadGradientAlphaKey();
+        }
+        for (int i = 0; i < cL; i++)
+        {
+            g.colorKeys[i] = ReadGradientColorKey();
+        }
+        return g;
+    }
+
+    public GradientAlphaKey ReadGradientAlphaKey()
+    {
+        GradientAlphaKey gak = new GradientAlphaKey();
+        gak.alpha = ReadFloat();
+        gak.time = ReadFloat();
+        return gak;
+    }
+
+    public GradientColorKey ReadGradientColorKey()
+    {
+        GradientColorKey gck = new GradientColorKey();
+        gck.color = ReadColor();
+        gck.time = ReadFloat();
+        return gck;
+    }
+
 }
