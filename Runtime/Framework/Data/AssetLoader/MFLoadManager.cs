@@ -47,10 +47,10 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     {
         string combinedpath = resInfo.Path + resInfo.Name;
         int hash = GetHash(combinedpath);
-        if (singleton._assetDict.TryGetValue(hash, out MFAssetData data))
+        if (GetInstance()._assetDict.TryGetValue(hash, out MFAssetData data))
         {
             data.refCount++;
-            singleton._assetDict[hash] = data;
+            GetInstance()._assetDict[hash] = data;
             return data.asset as T;
         }
         else
@@ -79,18 +79,37 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 //             }
             cb?.Invoke(assetInfo.asset);
             assetInfo.refCount = 1;
-            singleton._assetDict.Add(hash, assetInfo);
+            GetInstance()._assetDict.Add(hash, assetInfo);
             return assetInfo.asset as T;
         }
     }
 
+    // public static T DirectLoad<T>(T obj) where T:Object
+    // {
+    //     int hash = GetHash(obj.name);
+    //     if (GetInstance()._assetDict.TryGetValue(hash, out MFAssetData data))
+    //     {
+    //         data.refCount++;
+    //         GetInstance()._assetDict[hash] = data;
+    //         return data.asset as T;
+    //     }
+    //     else
+    //     {
+    //         MFAssetData assetInfo = new MFAssetData()
+    //         {
+    //             resInfo = new MFResInfo(obj.name, ""),
+    //             hash = hash,
+    //         };
+    //     }
+    // }
+
     private static void RealLoadFromBundle(string bundlePath, string name, ref MFAssetData assetInfo)
     {
-        singleton._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        GetInstance()._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
         if (bundle == null)
         {
             bundle = AssetBundle.LoadFromFile(GetStreamingAssetsPath() + bundlePath);
-            singleton._loadedBundle.Add(bundlePath, bundle);
+            GetInstance()._loadedBundle.Add(bundlePath, bundle);
         }
         assetInfo.asset = bundle.LoadAsset(name);
     }
@@ -101,7 +120,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
 
     private static void RealLoadFromBundleAsync(string bundlePath, string name, ref MFAssetData assetInfo)
     {
-        singleton._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
+        GetInstance()._loadedBundle.TryGetValue(GetStreamingAssetsPath() + bundlePath, out AssetBundle bundle);
         if (bundle == null)
         {
             var bundleLoadState = AssetBundle.LoadFromFileAsync(GetStreamingAssetsPath() + bundlePath);
@@ -112,7 +131,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
                 {
                     assetInfo.asset = loadAssetState.asset;
                 }
-                singleton._loadedBundle.Add(bundlePath, bundle);
+                GetInstance()._loadedBundle.Add(bundlePath, bundle);
             }
         }
         else
@@ -152,12 +171,12 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     {
         string combinedpath = resInfo.Path + resInfo.Name;
         int hash = GetHash(combinedpath);
-        if (singleton._assetDict.TryGetValue(hash, out MFAssetData data))
+        if (GetInstance()._assetDict.TryGetValue(hash, out MFAssetData data))
         {
             data.refCount--;
             if (data.refCount == 0)
             {
-                singleton._assetDict.Remove(hash);
+                GetInstance()._assetDict.Remove(hash);
                 data.Dispose();
             }
         }
@@ -168,18 +187,18 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
     }
     private static void UnloadBundles()
     {
-        foreach (var bundlePair in singleton._loadedBundle)
+        foreach (var bundlePair in GetInstance()._loadedBundle)
         {
             bundlePair.Value.Unload(false);
         }
-        singleton._loadedBundle.Clear();
+        GetInstance()._loadedBundle.Clear();
     }
 
 
     private static int GetHash(string str)
     {
         
-        // if (singleton.hashDict.TryGetValue(str, out int value))
+        // if (GetInstance().hashDict.TryGetValue(str, out int value))
         // {
         //     return value;
         // }
@@ -227,7 +246,7 @@ public class MFLoadManager : MFSingleton<MFLoadManager>, IMFSceneCycle
         //     case 1: hash = ((hash << 5) + hash) + str[ser++]; break; 
         //     case 0: break; 
         // } 
-        // singleton.hashDict.Add(str, hash);
+        // GetInstance().hashDict.Add(str, hash);
         // return hash; 
     }
 
