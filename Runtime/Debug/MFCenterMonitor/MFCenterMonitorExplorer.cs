@@ -30,7 +30,10 @@ namespace Moonflow.Core
     
         private void OnEnable()
         {
-            GetAllInstance();
+            if (Application.isPlaying)
+            {
+                GetAllInstance();
+            }
             // _uberPost = MFUberPostFeature.GetInstance();
         }
     
@@ -68,7 +71,16 @@ namespace Moonflow.Core
         }
         private void OnGUI()
         {
-            if (!_initialized) GetAllInstance();
+            if (!_initialized)
+            {
+                if (GUILayout.Button("GetSystems"))
+                {
+                    if (Application.isPlaying)
+                    {
+                        GetAllInstance();
+                    }
+                }
+            }
     
             if (systemName.Count > 0)
             {
