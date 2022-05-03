@@ -167,15 +167,15 @@ public class MFBinaryReader
         int cL = ReadInt();
         var alphaKeys = new GradientAlphaKey[aL];
         var colorKeys = new GradientColorKey[cL];
+        for (int i = 0; i < aL; i++)
+        {
+            alphaKeys[i] = ReadGradientAlphaKey();
+        }
+        for (int i = 0; i < cL; i++)
+        {
+            colorKeys[i] = ReadGradientColorKey();
+        }
         g.SetKeys(colorKeys, alphaKeys);
-        // for (int i = 0; i < aL; i++)
-        // {
-        //     g.alphaKeys[i] = ReadGradientAlphaKey();
-        // }
-        // for (int i = 0; i < cL; i++)
-        // {
-        //     g.colorKeys[i] = ReadGradientColorKey();
-        // }
         return g;
     }
 
