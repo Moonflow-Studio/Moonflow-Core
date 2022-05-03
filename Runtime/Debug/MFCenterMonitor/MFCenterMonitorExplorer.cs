@@ -81,13 +81,16 @@ namespace Moonflow.Core
                     }
                 }
             }
-    
-            if (systemName.Count > 0)
+
+            if (_initialized)
             {
-                selected = GUILayout.SelectionGrid(selected, systemName.ToArray(), systemList.Count);
-                systemList[selected].DrawMonitor();
+                if (systemName.Count > 0)
+                {
+                    selected = GUILayout.SelectionGrid(selected, systemName.ToArray(), systemList.Count);
+                    systemList[selected].DrawMonitor();
+                }
+                EditorGUILayout.Space(10);
             }
-            EditorGUILayout.Space(10);
         }
     
         
