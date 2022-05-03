@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -135,10 +136,12 @@ public class MFBinaryReader
         ac.preWrapMode = (WrapMode)m_BinaryReader.ReadInt32();
         ac.postWrapMode = (WrapMode)m_BinaryReader.ReadInt32();
         int length = m_BinaryReader.ReadInt32();
-        ac.keys = new Keyframe[length];
+        ac.keys = Array.Empty<Keyframe>();
+        
         for (int i = 0; i < length; i++)
         {
-            ac.keys[i] = ReadKeyframe();
+            ac.AddKey(ReadKeyframe());
+            // ac.keys[i] = ReadKeyframe();
         }
         return ac;
     }
@@ -162,16 +165,17 @@ public class MFBinaryReader
         g.mode = (GradientMode)ReadInt();
         int aL = ReadInt();
         int cL = ReadInt();
-        g.alphaKeys = new GradientAlphaKey[aL];
-        g.colorKeys = new GradientColorKey[cL];
-        for (int i = 0; i < aL; i++)
-        {
-            g.alphaKeys[i] = ReadGradientAlphaKey();
-        }
-        for (int i = 0; i < cL; i++)
-        {
-            g.colorKeys[i] = ReadGradientColorKey();
-        }
+        var alphaKeys = new GradientAlphaKey[aL];
+        var colorKeys = new GradientColorKey[cL];
+        g.SetKeys(colorKeys, alphaKeys);
+        // for (int i = 0; i < aL; i++)
+        // {
+        //     g.alphaKeys[i] = ReadGradientAlphaKey();
+        // }
+        // for (int i = 0; i < cL; i++)
+        // {
+        //     g.colorKeys[i] = ReadGradientColorKey();
+        // }
         return g;
     }
 
